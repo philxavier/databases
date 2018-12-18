@@ -13,14 +13,14 @@ var connection = mysql.createConnection({
 
 connection.connect();
 
-connection.query('SELECT * FROM messages', function (err, rows, fields) {
+// connection.query('SELECT * FROM messages', function (err, rows, fields) {
 
-  if (err) { console.log(err) }
+//   if (err) { console.log(err) }
 
-  console.log('fields here ', fields[0]);
-});
+//   console.log('fields here ', fields[0]);
+// });
 
-connection.end();
+// connection.end();
 
 exports.connection = connection;
 
