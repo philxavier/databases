@@ -17,7 +17,7 @@ connection.connect();
 
 //   if (err) { console.log(err) }
 
-//   console.log('fields here ', fields[0]);
+//   console.log('fields here ', fields);
 // });
 
 // connection.end();
