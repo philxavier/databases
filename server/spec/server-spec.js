@@ -91,11 +91,45 @@ describe('Persistent Node Chat Server', function() {
       // the message we just inserted:
       request('http://127.0.0.1:3000/classes/messages', function(error, response, body) {
         var messageLog = JSON.parse(body);
-        console.log(messageLog)
         expect(messageLog[0].MessageText).to.equal('Men like you can never change!');
         expect(messageLog[0].RoomName).to.equal('main');
         done();
       });
     });
   });
+  
+  //new tests
+  it('Should keep track of how many messages there are on the DB', function(done) {
+
+    dbConnection.query(`insert into usernames (UserNames) VALUES ('some_user')`, function(error, results) {
+      if (error) {
+        console.log('error username');
+      } 
+    });
+    
+    dbConnection.query(`insert into roomnames (RoomNames) VALUES ('main')`, function(error, results) {
+      if (error) {
+        console.log('error roomname');
+      } 
+    });
+
+    var queryString = `insert into messages (MessageText, UserName, RoomName)
+    VALUES ('Men like you can never change!', (SELECT UserNames FROM usernames WHERE UserNames = 'some_user'), (SELECT RoomNames FROM roomnames WHERE RoomNames = 'main'))`;
+
+    dbConnection.query(queryString, function(error, results) {
+      if (error) {
+        console.log(error);
+      }
+
+      request('http://127.0.0.1:3000/classes/messages', function(error, response, body) {
+        var messageLog = JSON.parse(body);
+        console.log('logging messagelog -----------------------------', messageLog);
+        expect(messageLog.length).to.not.equal(0);
+        done();
+      });
+    });
+
+   
+  });
+
 });

@@ -8,7 +8,6 @@ module.exports = {
         if (error) {
           console.log(error);
         } else {
-         // console.log(results)
           callback(results);
         }
       });
@@ -17,7 +16,7 @@ module.exports = {
     post: function(body) {
       var sqlRN = `INSERT INTO roomnames (RoomNames)
           SELECT '${body.RoomName}'
-          WHERE NOT EXISTS (SELECT RoomNames FROM roomnames WHERE RoomNames = '${body.RoomName}')`
+          WHERE NOT EXISTS (SELECT RoomNames FROM roomnames WHERE RoomNames = '${body.RoomName}')`;
 
       db.connection.query(sqlRN, function(error, results) {
         if (error) {
@@ -50,7 +49,7 @@ module.exports = {
     post: function(username) {
       var sqlUN = `INSERT INTO usernames (UserNames)
       SELECT '${username}'
-      WHERE NOT EXISTS (SELECT UserNames FROM usernames WHERE UserNames = '${username}')`
+      WHERE NOT EXISTS (SELECT UserNames FROM usernames WHERE UserNames = '${username}')`;
 
       db.connection.query(sqlUN, function(error, results) {
         if (error) {
