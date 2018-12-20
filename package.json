@@ -10,7 +10,7 @@
   },
   "scripts": {
     "postinstall": "curl -s https://raw.githubusercontent.com/reactorcore/pomander/master/bin/install | bash",
-    "start": "node ./server/app.js",
+    "start": "nodemon ./server/app.js",
     "start:es6": "babel-node ./server/app.js",
     "test": "mocha server/spec/server-spec.js",
     "test:es6": "mocha --compilers js:babel-register server/spec/server-spec.js; RES=$?; kill %1; exit $RES",
@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "body-parser": "^1.9.2",
+    "cors": "^2.8.5",
     "express": "^4.10.1",
     "jquery": "^3.3.1",
     "morgan": "^1.4.1",

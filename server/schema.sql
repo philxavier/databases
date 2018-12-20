@@ -5,13 +5,15 @@ USE chat;
 CREATE TABLE IF NOT EXISTS usernames (
     ID int NOT NULL AUTO_INCREMENT,
     UserNames varchar(255) DEFAULT 'guest',
-    PRIMARY KEY (ID)
+    PRIMARY KEY (ID),
+    UNIQUE (UserNames)
 );
 
 CREATE TABLE IF NOT EXISTS roomnames (
     ID int NOT NULL AUTO_INCREMENT,
     RoomNames varchar(255) DEFAULT 'main',
-    PRIMARY KEY (ID)
+    PRIMARY KEY (ID),
+    UNIQUE (RoomNames)
 );
 
 CREATE TABLE IF NOT EXISTS messages (

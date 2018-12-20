@@ -32,16 +32,16 @@ describe('Persistent Node Chat Server', function() {
     request({
       method: 'POST',
       uri: 'http://127.0.0.1:3000/classes/users',
-      json: { username: 'Valjean' }
+      json: { UserName: 'Valjean' }
     }, function () {
       // Post a message to the node chat server:
       request({
         method: 'POST',
         uri: 'http://127.0.0.1:3000/classes/messages',
         json: {
-          username: 'Valjean',
-          message: 'In mercys name, three days is all I need.',
-          roomname: 'Hello'
+          UserName: 'Valjean',
+          MessageText: 'In mercys name, three days is all I need.',
+          RoomName: 'Hello'
         }
       }, function () {
         // Now if we look in the database, we should find the
@@ -67,12 +67,22 @@ describe('Persistent Node Chat Server', function() {
 
   it('Should output all messages from the DB', function(done) {
     // Let's insert a message into the db
-    var queryString = `insert into messages (MessageText, UserID, RoomID)
-    VALUES ('Men like you can never change!', (SELECT ID FROM usernames WHERE UserNames = 'some_user'), (SELECT ID FROM roomnames WHERE RoomNames = 'main'))`;
+    var queryString = `insert into messages (MessageText, UserName, RoomName)
+    VALUES ('Men like you can never change!', (SELECT UserNames FROM usernames WHERE UserNames = 'some_user'), (SELECT RoomNames FROM roomnames WHERE RoomNames = 'main'))`;
     var queryArgs = [];
     // TODO - The exact query string and query args to use
     // here depend on the schema you design, so I'll leave
     // them up to you. */
+    dbConnection.query(`insert into usernames (UserNames) VALUES ('some_user')`, function(error, results) {
+      if (error) {
+        console.log('error username');
+      } 
+    });
+    dbConnection.query(`insert into roomnames (RoomNames) VALUES ('main')`, function(error, results) {
+      if (error) {
+        console.log('error roomname');
+      } 
+    });
 
     dbConnection.query(queryString, queryArgs, function(err) {
       if (err) { throw err; }

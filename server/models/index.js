@@ -8,23 +8,16 @@ module.exports = {
         if (error) {
           console.log(error);
         } else {
-          // console.log("message results-----------------------------", results)
-          // console.log(callback);
+         // console.log(results)
           callback(results);
         }
       });
-
-      // db.connection.queryAsync('select * from messages',)
-      //   .then((results)=>{
-      //     console.log(results)
-      //   });
-
     },
     // a function which produces all the messages
-    post: function(body, callback) {
+    post: function(body) {
       var sqlRN = `INSERT INTO roomnames (RoomNames)
-          SELECT '${body.roomname}'
-          WHERE NOT EXISTS (SELECT RoomNames FROM roomnames WHERE RoomNames = '${body.roomname}')`
+          SELECT '${body.RoomName}'
+          WHERE NOT EXISTS (SELECT RoomNames FROM roomnames WHERE RoomNames = '${body.RoomName}')`
 
       db.connection.query(sqlRN, function(error, results) {
         if (error) {
@@ -32,8 +25,8 @@ module.exports = {
         } 
       });
 
-      var sqlM = `insert into messages (MessageText, UserID, RoomID)
-       VALUES ('${body.message}', (SELECT UserNames FROM usernames WHERE UserNames = '${body.username}'), (SELECT RoomNames FROM roomnames WHERE RoomNames = '${body.roomname}'))`;
+      var sqlM = `insert into messages (MessageText, UserName, RoomName)
+       VALUES ('${body.MessageText}', (SELECT UserNames FROM usernames WHERE UserNames = '${body.UserName}'), (SELECT RoomNames FROM roomnames WHERE RoomNames = '${body.RoomName}'))`;
       db.connection.query(sqlM, function(error, results) {
         if (error) {
           console.log('error messages', error);
@@ -44,7 +37,16 @@ module.exports = {
 
   users: {
     // Ditto as above.
-    get: function() {},
+    get: function(callback) {
+      db.connection.query('select * from users', function(error, results) {
+        if (error) {
+          console.log(error);
+        } else {
+          //console.log(results)
+          callback(results);
+        }
+      });
+    },
     post: function(username) {
       var sqlUN = `INSERT INTO usernames (UserNames)
       SELECT '${username}'
@@ -53,7 +55,7 @@ module.exports = {
       db.connection.query(sqlUN, function(error, results) {
         if (error) {
           console.log('error');
-        } 
+        }
       });
     }
   }
