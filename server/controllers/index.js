@@ -1,25 +1,31 @@
-var models = require('../models');
+var models = require("../models");
 
 module.exports = {
   messages: {
-    get: function (req, res) {
-      models.messages.get()
-      res.send('message')
-      //console.log('parameters ========== ', req);
+    get: function(req, res) {
+      var results = models.messages.get((data) => {
+        res.json(data);
+      });
     }, // a function which handles a get request for all messages
-    post: function () {
-      //console.log('request body =================', req.body);
-      var test = 'string'
-      models.messages.post(test);
-      //res.send('posted');
+    post: function(req, res) {
+      models.messages.post(req.body);
+      models.messages.get((data) => {
+        //console.log("data---------------------------------------",data)
+        res.send(data);
+      });
+      
     } // a function which handles posting a message to the database
   },
 
   users: {
     // Ditto as above
-    get: function (req, res) {},
-    post: function (req, res) {}
+    get: function(req, res) {
+      models.user.get();
+      res.json(req.body);
+    },
+    post: function(req, res) {
+      models.users.post(req.body.username);
+      res.json(req.body);
+    }
   }
 };
-
- 

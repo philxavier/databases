@@ -1,46 +1,60 @@
+var Promise = require('bluebird');
 var db = require('../db');
-//db.connection.connect();
+
 module.exports = {
   messages: {
-    get: function() {
-      console.log('hello ----------------------------');
+    get: function(callback) {
       db.connection.query('select * from messages', function(error, results) {
         if (error) {
-          //response.status(400).send('Error in database operation');
           console.log(error);
         } else {
-          console.log('get results: ', results)
-          return results;
-        }
-      });
-    },
-    // a function which produces all the messages
-    post: function(text) {
-      console.log('TEXT HERE -----------------', text);
-      db.connection.query("insert into messages MessageText VALUES "+text, function(error, results) {
-        if (error) {
-          //response.status(400).send('Error in database operation');
-          console.log(error);
-        } else {
-          console.log('post results: =============================', results)
-          return results;
+          // console.log("message results-----------------------------", results)
+          // console.log(callback);
+          callback(results);
         }
       });
 
-    //   app.post('/data', function(req, res){
-    //     var username=req.body.name;
-    //     connection.query("INSERT INTO `names` (name) VALUES (?)", username.toString(), function(err, result){
-    //         if(err) throw err;
-    //             console.log("1 record inserted");
-    //         });
-    //     res.send(username);
-    // });
+      // db.connection.queryAsync('select * from messages',)
+      //   .then((results)=>{
+      //     console.log(results)
+      //   });
+
+    },
+    // a function which produces all the messages
+    post: function(body, callback) {
+      var sqlRN = `INSERT INTO roomnames (RoomNames)
+          SELECT '${body.roomname}'
+          WHERE NOT EXISTS (SELECT RoomNames FROM roomnames WHERE RoomNames = '${body.roomname}')`
+
+      db.connection.query(sqlRN, function(error, results) {
+        if (error) {
+          console.log('error roomname');
+        } 
+      });
+
+      var sqlM = `insert into messages (MessageText, UserID, RoomID)
+       VALUES ('${body.message}', (SELECT UserNames FROM usernames WHERE UserNames = '${body.username}'), (SELECT RoomNames FROM roomnames WHERE RoomNames = '${body.roomname}'))`;
+      db.connection.query(sqlM, function(error, results) {
+        if (error) {
+          console.log('error messages', error);
+        } 
+      });
     } // a function which can be used to insert a message into the database
   },
 
   users: {
     // Ditto as above.
     get: function() {},
-    post: function() {}
+    post: function(username) {
+      var sqlUN = `INSERT INTO usernames (UserNames)
+      SELECT '${username}'
+      WHERE NOT EXISTS (SELECT UserNames FROM usernames WHERE UserNames = '${username}')`
+
+      db.connection.query(sqlUN, function(error, results) {
+        if (error) {
+          console.log('error');
+        } 
+      });
+    }
   }
 };
