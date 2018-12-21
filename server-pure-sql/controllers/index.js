@@ -8,8 +8,8 @@ module.exports = {
       });
     }, // a function which handles a get request for all messages
     post: function(req, res) {
-      // models.users.post(req.body.UserName);
-      // models.messages.post(req.body);
+      models.users.post(req.body.UserName);
+      models.messages.post(req.body);
       
       models.messages.get((data) => {
         res.send(data);
@@ -27,7 +27,7 @@ module.exports = {
     },
     post: function(req, res) {
       console.log('username-----------------------', req.body);
-      //models.users.post(req.body.UserName);
+      models.users.post(req.body.UserName);
       models.messages.get((data) => {
         res.send(data);
       });
