@@ -65,7 +65,7 @@ db.sync();
 
 exports.connection = db;
 exports.Message = Message;
-exports.User = User
+exports.User = User;
 
 
 
