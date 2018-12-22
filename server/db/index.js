@@ -12,16 +12,37 @@ var db = new Sequelize('chat', 'root', 'student');
 /* first define the data structure by giving property names and datatypes
  * See http://sequelizejs.com for other datatypes you can use besides STRING. */
 var User = db.define('User', {
-  username: Sequelize.STRING
+  username: {
+    type: Sequelize.STRING,
+    unique: true
+  },
+  createdAt: {
+    type: Sequelize.DATE,
+    defaultValue: Sequelize.NOW
+  },
+  updatedAt: {
+    type: Sequelize.DATE,
+    defaultValue: Sequelize.NOW
+  }
+  // createdAt: new Date(),
+  // updatedAt: new Date()
 });
-
 var Message = db.define('MessageObject', {
   //userid: Sequelize.INTEGER,
   text: Sequelize.STRING,
-  roomname: Sequelize.STRING
+  roomname: Sequelize.STRING,
+  createdAt: {
+    type: Sequelize.DATE,
+    defaultValue: Sequelize.NOW
+  },
+  updatedAt: {
+    type: Sequelize.DATE,
+    defaultValue: Sequelize.NOW
+  }
 });
 
 Message.belongsTo(User);
+User.hasMany(Message);
 db.sync();
 
 // var connection = mysql.createConnection({

@@ -12,9 +12,9 @@ var FormView = {
     event.preventDefault(); //The event.preventDefault() method stops the default action of an element from happening.
 
     var message = {
-      UserName: App.username,
-      MessageText: $('#message').val(),
-      RoomName: $('select').val()
+      username: App.username,
+      text: $('#message').val(),
+      roomname: $('select').val()
     };
 
     // define success callback

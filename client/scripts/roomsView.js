@@ -20,12 +20,12 @@ var RoomsView = {
   },
 
 
-  renderRoom: function (RoomName, data) {
+  renderRoom: function (roomname, data) {
     // get updated data from server and filter for the messages in the current chat room
     var chatData = _.filter(data, message => {
-      return message.hasOwnProperty('RoomName') &&
-        message.hasOwnProperty('UserName') &&
-        message.RoomName === RoomName;
+      return message.hasOwnProperty('roomname') &&
+        message.hasOwnProperty('User') &&
+        message.roomname === roomname;
     });
     // delete current messages in chat area
     $('#chats').children().remove();

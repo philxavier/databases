@@ -22,7 +22,7 @@ var App = {
 
     Parse.readAll((data) => {
       //find the unique values of the room names
-      var rooms = _.uniq(_.pluck(data, "RoomName"));
+      var rooms = _.uniq(_.pluck(data, "roomname"));
       //add those rooms to the select
       _.each(rooms, (room) => Rooms.add(room));
       // pick default and render chats for that room
